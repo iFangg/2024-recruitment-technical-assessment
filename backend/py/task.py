@@ -14,14 +14,8 @@ class File:
 Task 1
 """
 def leafFiles(files: list[File]) -> list[str]:
-    leafFiles = []
-    parents = []
-    for f in files:
-        parents.append(f.parent)
-
-    for f in files:
-        if (f.id != -1 and not (f.id in parents)):
-            leafFiles.append(f.name)
+    parentIds = set(f.parent for f in files)
+    leafFiles = [f.name for f in files if f.id != -1 and f.id not in parentIds]
 
     return leafFiles
 
