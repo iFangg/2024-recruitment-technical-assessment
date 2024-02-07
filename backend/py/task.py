@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from collections import defaultdict
 
 @dataclass
 class File:
@@ -13,7 +14,16 @@ class File:
 Task 1
 """
 def leafFiles(files: list[File]) -> list[str]:
-    return []
+    leafFiles = []
+    parents = []
+    for f in files:
+        parents.append(f.parent)
+
+    for f in files:
+        if (f.id != -1 and not (f.id in parents)):
+            leafFiles.append(f.name)
+
+    return leafFiles
 
 
 """
@@ -63,3 +73,7 @@ if __name__ == '__main__':
     ]
 
     assert largestFileSize(testFiles) == 20992
+
+# print(sorted(leafFiles(testFiles)))
+# print(kLargestCategories(testFiles, 3))
+# print(largestFileSize(testFiles))
