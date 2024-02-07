@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 @dataclass
 class File:
@@ -30,19 +30,11 @@ def leafFiles(files: list[File]) -> list[str]:
 Task 2
 """
 def kLargestCategories(files: list[File], k: int) -> list[str]:
-    categories = {}
-    for f in files:
-        for cat in f.categories:
-            if cat not in categories:
-                categories[cat] = 1
-            else:
-                categories[cat] += 1 
-
-    kLargest = []
-    for cat in sorted(categories.items(), key=lambda x: (-x[1], x[0])):
-        kLargest.append(cat[0])
-
-    return kLargest[:k]
+    categories_count = Counter(category for file in files for category in file.categories)
+    k_largest = [category for category, _ in categories_count.most_common(k)]
+    k_largest.sort(key=lambda category: (-categories_count[category], category))
+    
+    return k_largest
 
 
 """
