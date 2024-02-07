@@ -48,8 +48,27 @@ def kLargestCategories(files: list[File], k: int) -> list[str]:
 """
 Task 3
 """
-def largestFileSize(files: list[File]) -> int:
-    return 0
+def findRootParent(files, file):
+    if file.parent == -1: return file.id
+    for f in files:
+        if file.parent == f.id:
+            return findRootParent(files, f)
+
+def largestFileSize1(files: list[File]) -> int:
+    if not files: return 0
+    totalSizes = []
+    parentSizes = {}
+    for f in files:
+        rootFileId = findRootParent(files, f)
+        if rootFileId not in parentSizes:
+            parentSizes[rootFileId] = f.size
+        else:
+            parentSizes[rootFileId] += f.size
+    print(parentSizes)
+    for parents in parentSizes.items():
+        totalSizes.append(parents[1])
+
+    return sorted(totalSizes)[-1]
 
 
 if __name__ == '__main__':
